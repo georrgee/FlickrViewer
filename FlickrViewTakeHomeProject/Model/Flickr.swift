@@ -12,7 +12,7 @@ class Flickr {
     typealias flickrResponse = (NSError?, [Photo]?) -> Void
     
     // method that implements Flickr's Search API
-    class func getPhotosFromSearch(searchText: String, onCompletion: @escaping flickrResponse) -> Void {
+    class func getPhotosFromSearch(searchText: String, page: Int, onCompletion: @escaping flickrResponse) -> Void {
         
         let flickrAPIKey = "bb791ab5e81cb8f459774788fa1c0380"
         let escapeSearchText: String = searchText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
@@ -25,7 +25,7 @@ class Flickr {
             apiMethod = "flickr.photos.getRecent" // once the main view controller loads, pictures of the "Get Recent" section will display on the CollectionView
         }
         
-        let flickrURL: String = "https://api.flickr.com/services/rest/?method=\(apiMethod)&api_key=\(flickrAPIKey)&tags=\(escapeSearchText)&per_page=60&format=json&nojsoncallback=1"
+        let flickrURL: String = "https://api.flickr.com/services/rest/?method=\(apiMethod)&api_key=\(flickrAPIKey)&tags=\(escapeSearchText)&per_page=20&format=json&nojsoncallback=1&page=\(page)"
         
         let url: NSURL = NSURL(string: flickrURL)!
         

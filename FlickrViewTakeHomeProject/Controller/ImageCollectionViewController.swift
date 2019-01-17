@@ -15,6 +15,8 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     @IBOutlet weak var searchBar: UISearchBar!
     
     var flickrPhotos: [Photo] = []
+    var page: Int = 1
+    
     let cellID = "imageCell"        // Cell Reuse Identifier
     
     override func viewDidLoad() {
@@ -59,10 +61,21 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
         collectionView.deselectItem(at: indexPath, animated: true)
     }
     
+    // using this function, we can use Pagination
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if indexPath.row == flickrPhotos.count - 1 { 
+            if let query = searchBar.text {
+                searchWithTextAction(text: query)
+            }
+        }
+    }
+    
     // MARK: UISearchBarDelegate
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+        flickrPhotos.removeAll(keepingCapacity: false)
         searchWithTextAction(text: searchBar.text!)
         collectionView.reloadData()
     }
@@ -71,11 +84,16 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     func searchWithTextAction(text: String) {
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        Flickr.getPhotosFromSearch(searchText: text, onCompletion: { (error: NSError?, photos: [Photo]?) -> Void in
+        Flickr.getPhotosFromSearch(searchText: text, page: page, onCompletion: { (error: NSError?, photos: [Photo]?) -> Void in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
+            // If the data contains more than zero, increment the page number. Hence display more results
+            if (photos?.count ?? 0) > 0 {
+                self.page += 1
+            }
+            
             if error == nil {
-                self.flickrPhotos = photos!
+                self.flickrPhotos.append(contentsOf: photos!)
             } else {
                 self.flickrPhotos = []
                 
