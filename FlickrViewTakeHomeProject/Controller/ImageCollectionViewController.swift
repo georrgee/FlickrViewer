@@ -106,7 +106,6 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
             DispatchQueue.main.async(execute: { () -> Void in
                 self.collectionView.reloadData()
             })
-            
         })
     }
     
