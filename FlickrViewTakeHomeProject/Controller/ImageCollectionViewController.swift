@@ -131,5 +131,4 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
             }
         }
     }
-    
 }
