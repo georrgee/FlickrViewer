@@ -4,5 +4,4 @@ This project involves in implementing a simple image search app. Using Flickr's 
 flickrviewer_logo.PNG
 
 ![](flickrviewergif.gif)
-![](flickrviewer_logo.jpg)
-
+<img src="flickrviewer_logo.PNG" height="300">
